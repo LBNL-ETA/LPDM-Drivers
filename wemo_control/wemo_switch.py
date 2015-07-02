@@ -6,6 +6,7 @@ class WemoInsight:
 
 		self.device_name = device_name
 		self.url = 'http://' + server_url + ':5000/api/device/' + device_name
+                # server_url is ip address of volttron90
 
 	def on(self):
 
