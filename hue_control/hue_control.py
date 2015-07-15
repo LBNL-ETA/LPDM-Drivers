@@ -6,7 +6,7 @@ class HueBridge:
         #New Hue control with ip and user name
         self.ip        = ip
         self.user_name = user_name
-        self.bridge    = Bridge(device={'ip':ip}, user={'name':user_name})
+        self.bridge    = Bridge(device={'ip':ip}, user={'name':***REMOVED***})
            
     def create_config(self):
         #ideally this has already been configured 
@@ -60,7 +60,7 @@ class HueBridge:
         } 
         bridge.light.update(resource)
 
-    def update_light_state(self, whichLights):
+    def update_light_state(self, whichLights, data):
         "Updates light state such as on, brightness, hue, etc"
         resource = {
             'which': whichLights,
