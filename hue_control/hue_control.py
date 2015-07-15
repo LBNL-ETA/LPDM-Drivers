@@ -58,7 +58,7 @@ class HueBridge:
             # Data is an object in the form {'name', etc}
             'data' : {'attr':data}
         } 
-        bridge.light.update(resource)
+        self.bridge.light.update(resource)
 
     def update_light_state(self, whichLights, data):
         "Updates light state such as on, brightness, hue, etc"
@@ -67,4 +67,4 @@ class HueBridge:
             # Data is an object in the form {'on', 'ct', 'bri', etc}
             'data' : {'state':data}
         } 
-        bridge.light.update(resource)
+        self.bridge.light.update(resource)
