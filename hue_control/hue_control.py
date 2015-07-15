@@ -4,8 +4,8 @@ from beautifulhue.api import Bridge
 class HueBridge:
     def __init__(self, ip = '192.168.1.2', user_name = 'guest'):
         #New Hue control with ip and user name
-        self.ip        = ip
-        self.user_name = user
+        self.ip        = import
+        self.user_name = user_name
         self.bridge    = Bridge(device={'ip':ip}, user={'name':user_name})
            
     def create_config():
