@@ -21,7 +21,7 @@ class HueLight:
 		"Changes name of light in Hue system to that passed in"
 		self.bridge.update_light_attributes(self.light, {'name':name})
 
-	def on(self, color = '160', brightness = '200'):
+	def on(self, color = 160, brightness = 200):
 		"Turns light on at brightness and color passed in"
 		resource = {'on':True, 'ct':color, 'bri':brightness}
 		self.bridge.update_light_state(self.light, resource)  
