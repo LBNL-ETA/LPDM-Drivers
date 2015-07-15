@@ -13,25 +13,25 @@ class HueLight:
 
 		self.light = light
 		
-	def get_info():
+	def get_info(self):
 		"Returns a dict holding info about this light/lights"
 		return self.bridge.get_light(self.light)
 
-	def rename(name):	
+	def rename(self, name):	
 		"Changes name of light in Hue system to that passed in"
 		self.bridge.update_light_attributes(self.light, {'name':name})
 
-	def on(color = '232', brightness = '200'):
+	def on(self, color = '232', brightness = '200'):
 		"Turns light on at brightness and color passed in"
 		resource = {'state':'on', 'ct':color, 'bri':brightness}
 		self.bridge.update_light_state(self.light, resource)  
 
-	def update_state(state, color, brightness):
+	def update_state(self, state, color, brightness):
 		"Updates state information to brightness and color passed in"
 		resource = {'state':state, 'ct':color, 'bri':brightness}
 		self.bridge.update_light_state(self.light, resource)		
 
-	def off():
+	def off(self):
 		"Turns light off"	
 		resource = {'state':'off'}
 		self.bridge.update_light_state(self.light, resource)				

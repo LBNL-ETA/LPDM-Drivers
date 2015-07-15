@@ -8,7 +8,7 @@ class HueBridge:
         self.user_name = user_name
         self.bridge    = Bridge(device={'ip':ip}, user={'name':user_name})
            
-    def create_config():
+    def create_config(self):
         #ideally this has already been configured 
         "Configures the Hue bridge"
         created = False
@@ -26,32 +26,32 @@ class HueBridge:
             else:                                                                       
                 created = True                                                          
 
-    def get_system_data():
+    def get_system_data(self):
         "Return a dict object containing system information"
         resource = {'which':'system'}                                                     
         return self.bridge.config.get(resource)['resource']
 
-    def get_new_lights():
+    def get_new_lights(self):
         "Returns a dict object containing all newly added hue lights"
         resource = {'which':'new'}
         return self.bridge.light.get(resource)['resource']
 
-    def get_all_lights():
+    def get_all_lights(self):
         "Returns a dict object containing all hue lights"
         resource = {'which':'all'}
         return self.bridge.light.get(resource)['resource']
 
-    def get_light(lightIndex):
+    def get_light(self, lightIndex):
         "Returns a dict object containing values of particular light"
         resources = {'which':lightIndex}
         return self.bridge.light.get(resource)['resource']
 
-    def find_new_lights():
+    def find_new_lights(self):
         "Discovers new lights associated with bridge"
         resource = {'which':'new'}
         return self.bridge.light.find(resource)['resource']   
 
-    def update_light_attributes(whichLights, data):
+    def update_light_attributes(self, whichLights, data):
         "Updates light attributes such as name, etc"
         resource = {
             'which': whichLights,
@@ -60,7 +60,7 @@ class HueBridge:
         } 
         bridge.light.update(resource)
 
-    def update_light_state(whichLights):
+    def update_light_state(self, whichLights):
         "Updates light state such as on, brightness, hue, etc"
         resource = {
             'which': whichLights,
