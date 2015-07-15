@@ -2,15 +2,14 @@ from beautifulhue import Bridge
 
 # Control functionality of bridge system wrapper to simplify interface
 class HueBridge:
-
-	def __init__(self, ip = '192.168.1.2', user_name = 'guest'):
-        "New Hue control with ip and user name"
-	    self.ip        = ip
+    def __init__(self, ip = '192.168.1.2', user_name = 'guest'):
+        #New Hue control with ip and user name
+        self.ip        = ip
         self.user_name = user
         self.bridge    = Bridge(device={'ip':ip}, user={'name':user_name})
-        
-    #ideally this has already been configured    
+           
     def create_config():
+        #ideally this has already been configured 
         "Configures the Hue bridge"
         created = False
         print 'Press the button on the Hue bridge'
@@ -55,7 +54,7 @@ class HueBridge:
     def update_light_attributes(whichLights, data):
         "Updates light attributes such as name, etc"
         resource = {
-            'which': whichLights
+            'which': whichLights,
             # Data is an object in the form {'name', etc}
             'data' : {'attr':data}
         } 
@@ -64,7 +63,7 @@ class HueBridge:
     def update_light_state(whichLights):
         "Updates light state such as on, brightness, hue, etc"
         resource = {
-            'which': whichLights
+            'which': whichLights,
             # Data is an object in the form {'on', 'ct', 'bri', etc}
             'data' : {'state':data}
         } 
