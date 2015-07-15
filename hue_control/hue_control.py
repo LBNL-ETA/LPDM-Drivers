@@ -17,7 +17,7 @@ class HueBridge:
         # Looks for hue, continually sending message until successfull
         while not created:
             # Test message to the hue                                                              
-            resource = {'user':{'devicetype': 'beautifulhuetest', 'name': user_name}}    
+            resource = {'user':{'devicetype': 'beautifulhuetest', 'name': self.user_name}}    
             # Attempt config with message
             response = self.bridge.config.create(resource)['resource']                       
             if 'error' in response[0]:                                                  
