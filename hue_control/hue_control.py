@@ -1,4 +1,4 @@
-from beautifulhue import Bridge
+from beautifulhue.api import Bridge
 
 # Control functionality of bridge system wrapper to simplify interface
 class HueBridge:
