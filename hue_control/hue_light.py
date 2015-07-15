@@ -23,7 +23,7 @@ class HueLight:
 
 	def on(self, color = 160, brightness = 200):
 		"Turns light on at brightness and color passed in"
-		resource = {'on':True, 'ct':color, 'bri':brightness}
+		resource = {'on':True, 'hue':color, 'bri':brightness}
 		self.bridge.update_light_state(self.light, resource)  
 
 	def update_state(self, state):
