@@ -5,7 +5,7 @@ class HueLight:
 
 	def __init__(self, bridge, light = '1'):
 		"Instantiates control over properties of light"
-		if isInstance(bridge, HueBridge):
+		if isinstance(bridge, HueBridge):
 			self.bridge = bridge
 		else:
 			print('No bridge provided, assuming default bridge')
