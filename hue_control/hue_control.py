@@ -2,11 +2,11 @@ from beautifulhue.api import Bridge
 
 # Control functionality of bridge system wrapper to simplify interface
 class HueBridge:
-    def __init__(self, ip = '192.168.1.2', user_name = 'guest'):
+    def __init__(self, ip = '192.168.1.2', user_name = '***REMOVED***'):
         #New Hue control with ip and user name
         self.ip        = ip
         self.user_name = user_name
-        self.bridge    = Bridge(device={'ip':ip}, user={'name':***REMOVED***})
+        self.bridge    = Bridge(device={'ip':ip}, user={'name':user_name})
            
     def create_config(self):
         #ideally this has already been configured 
