@@ -2,10 +2,12 @@ import requests
 
 class ConnectedControls: 
 
-	def change_state(deviceID, isOn = True):
+	def __init__(self, ):
+
+	def change_state(self, deviceID, isOn = True):
 		"Switches state to either on or off based on isOn"
 
-	def set_brightness(deviceID, brightness = 100):
+	def set_brightness(self, deviceID, brightness = 100):
 		"Sets brightness to value passed in"
 
 	def get_system_status():
