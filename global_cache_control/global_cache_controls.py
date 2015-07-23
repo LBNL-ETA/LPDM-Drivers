@@ -85,5 +85,5 @@ class GlobalCacheBridge:
 
     def sendir(self, sensor, message):
         "Sends an IR message passed in and prints response"
-        self.s.sendall('sendir', + str(sensor) + ':' + message + '\r')
+        self.s.sendall('sendir,' + str(sensor) + ':' + message + '\r')
         return self.s.recv(24)
