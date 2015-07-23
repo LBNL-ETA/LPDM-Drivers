@@ -10,7 +10,7 @@ class GlobalCacheBridge:
         # intiate socket
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # connect to itach via socket
-        self.s.connect((PORT, address))
+        self.s.connect((address, PORT))
 
         # enable all relays
         print(self.enable_all())
@@ -35,7 +35,7 @@ class GlobalCacheBridge:
 
     def setstate(self, relay=1, state=0):
         "Sets state for relay passed in where 0 is open, 1 is closed"
-        self.s.sendall("setstate,1:" + relay + "," + state + "\r")
+        self.s.sendall("setstate,1:" + str(relay) + "," + str(state) + "\r")
         return self.s.recv(24)
 
     def get_IR_all(self):
@@ -48,7 +48,7 @@ class GlobalCacheBridge:
 
     def get_IR(self, connector_index=1):
         "Returns current mode setting of IR connector"
-        self.s.sendall("get_IR,1:" + connector_index + "\r")
+        self.s.sendall("get_IR,1:" + str(connector_index) + "\r")
         return self.s.recv(24)
 
     def get_states(self):
@@ -61,7 +61,7 @@ class GlobalCacheBridge:
 
     def get_state(self, sensor_index=1):
         "gets state information from iTach on sensor_index sensor"
-        self.s.sendall("getstate,1:" + sensor_index + "\r")
+        self.s.sendall("getstate,1:" + str(sensor_index) + "\r")
         return self.s.recv(24)
 
     # Learning mode command functions
@@ -82,4 +82,3 @@ class GlobalCacheBridge:
         self.s.sendall("stop_IRL\n")
         reponse = self.s.recv(24)
         return reponse
-        
