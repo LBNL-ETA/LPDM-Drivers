@@ -54,9 +54,9 @@ class GlobalCacheBridge:
     def get_states(self):
         "returns a dict containing the state of each sensor input"
         states = {}
-        states[1] = self.getstate(1)
-        states[2] = self.getstate(2)
-        states[3] = self.getstate(3)
+        states[1] = self.get_state(1)
+        states[2] = self.get_state(2)
+        states[3] = self.get_state(3)
         return states
 
     def get_state(self, sensor_index=1):
