@@ -72,7 +72,7 @@ class GlobalCacheBridge:
         response = self.s.recv(24)
         if response == "IR learner Enabled/r":
             packet = self.s.recv(24 * numpackets)
-            stop_IRL()
+            self.stop_IRL()
             return packet
         else:
             return response
