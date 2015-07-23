@@ -3,7 +3,6 @@ from global_cache_controls import GlobalCacheBridge
 
 class DVDController:
     def __init__(self, bridge, emitter=1):
-        if()
         self.bridge = bridge
         self.emitter = 1
 
