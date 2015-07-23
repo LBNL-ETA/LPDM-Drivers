@@ -41,9 +41,9 @@ class GlobalCacheBridge:
     def get_IR_all(self):
         "Return a dict of currents mode settings of all IR connectors"
         result = {}
-        result[1] = self.get_IR_all(1)
-        result[2] = self.get_IR_all(2)
-        result[3] = self.get_IR_all(3)
+        result[1] = self.get_IR(1)
+        result[2] = self.get_IR(2)
+        result[3] = self.get_IR(3)
         return result
 
     def get_IR(self, connector_index=1):
@@ -82,3 +82,7 @@ class GlobalCacheBridge:
         self.s.sendall("stop_IRL\n")
         reponse = self.s.recv(24)
         return reponse
+
+    def sendir(self, output, message):
+        "Sends an IR message passed in and prints response"
+        self.s.sendall("sendir," + str(output) + ":" + message)
