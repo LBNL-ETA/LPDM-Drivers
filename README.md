@@ -1,4 +1,4 @@
-Hardware adapters (WeMo lights and switches, PWM fan)
+Hardware adapters (WeMo lights and switches, Hue Lights, IP IR Bridge, Connected by TCP lights, PWM fan)
 
 Documentation for each system can be found here:
  https://docs.google.com/a/lbl.gov/document/d/1Q6v6Al0Q7rn_3mdpHLPZaN-xkiN_Z2TM1xf0hcFDm8U/edit?usp=sharing
