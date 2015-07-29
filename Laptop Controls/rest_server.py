@@ -4,6 +4,7 @@
 #!flask/bin/python
 from flask import Flask, jsonify, abort, request, make_response, url_for
 from flask.ext.httpauth import HTTPBasicAuth
+import laptop_control
 
 app = Flask(__name__, static_url_path = "")
 auth = HTTPBasicAuth()
@@ -27,85 +28,73 @@ def not_found(error):
 @app.errorhandler(404)
 def not_found(error):
     return make_response(jsonify( { 'error': 'Not found' } ), 404)
-
-powerSettings = [
-    {
-        'id': 1,
-        'title': u'Buy groceries',
-        'description': u'Milk, Cheese, Pizza, Fruit, Tylenol', 
-        'done': False
-    },
-    {
-        'id': 2,
-        'title': u'Learn Python',
-        'description': u'Need to find a good Python tutorial on the web', 
-        'done': False
-    }
-]
-
-def make_public_task(task):
-    new_task = {}
-    for field in task:
-        if field == 'id':
-            new_task['uri'] = url_for('get_task', task_id = task['id'], _external = True)
-        else:
-            new_task[field] = task[field]
-    return new_task
     
-@app.route('/laptoppower/api/v1.0/tasks', methods = ['GET'])
+@app.route('/laptoppower/api/v1.0/profiles', methods = ['GET'])
 @auth.login_required
-def get_tasks():
-    return jsonify( { 'tasks': map(make_public_task, tasks) } )
+def get_list():
+    return jsonify(laptop_control.list())
 
-@app.route('/laptoppower/api/v1.0/tasks/<int:task_id>', methods = ['GET'])
+@app.route('/laptoppower/api/v1.0/profiles/getprofile/<guid>', methods = ['GET'])
 @auth.login_required
-def get_task(task_id):
-    task = filter(lambda t: t['id'] == task_id, tasks)
-    if len(task) == 0:
+def get_profile(guid):
+    profile = laptop_control.query(guid)
+    if len(profile) == 0:
         abort(404)
-    return jsonify( { 'task': make_public_task(task[0]) } )
+    return jsonify({'profile': profile})
 
-@app.route('/laptoppower/api/v1.0/tasks', methods = ['POST'])
+@app.route('/laptoppower/api/v1.0/profiles/aliases', methods = ['GET'])
 @auth.login_required
-def create_task():
-    if not request.json or not 'title' in request.json:
-        abort(400)
-    task = {
-        'id': tasks[-1]['id'] + 1,
-        'title': request.json['title'],
-        'description': request.json.get('description', ""),
-        'done': False
-    }
-    tasks.append(task)
-    return jsonify( { 'task': make_public_task(task) } ), 201
+def get_aliases():
+    return jsonify({'aliases', laptop_control.get_aliases})
 
-@app.route('/laptoppower/api/v1.0/tasks/<int:task_id>', methods = ['PUT'])
+@app.route('/laptoppower/api/v1.0/profiles/active', methods = ['GET'])
 @auth.login_required
-def update_task(task_id):
-    task = filter(lambda t: t['id'] == task_id, tasks)
-    if len(task) == 0:
-        abort(404)
-    if not request.json:
-        abort(400)
-    if 'title' in request.json and type(request.json['title']) != unicode:
-        abort(400)
-    if 'description' in request.json and type(request.json['description']) is not unicode:
-        abort(400)
-    if 'done' in request.json and type(request.json['done']) is not bool:
-        abort(400)
-    task[0]['title'] = request.json.get('title', task[0]['title'])
-    task[0]['description'] = request.json.get('description', task[0]['description'])
-    task[0]['done'] = request.json.get('done', task[0]['done'])
-    return jsonify( { 'task': make_public_task(task[0]) } )
-    
-@app.route('/laptoppower/api/v1.0/tasks/<int:task_id>', methods = ['DELETE'])
+def get_active():
+    return jsonify({'aliases', laptop_control.get_active})
+
+@app.route('/laptoppower/api/v1.0/profiles/setprofile', methods = ['POST'])
 @auth.login_required
-def delete_task(task_id):
-    task = filter(lambda t: t['id'] == task_id, tasks)
-    if len(task) == 0:
+def set_profile():
+    if not request.json or not 'guid' in request.json:
+        abort(400)
+    response = laptop_control.set_active(request.json['guid'])
+    return jsonify( { 'response': response } ), 201
+
+@app.route('/laptoppower/api/v1.0/profiles/setprofilebyname', methods = ['POST'])
+@auth.login_required
+def set_profile_by_name():
+    if not request.json or not 'name' in request.json:
+        abort(400)
+    response = laptop_control.set_active_by_name(request.json['name'])
+    return jsonify( { 'response': response } ), 201
+
+
+# @app.route('/laptoppower/api/v1.0/tasks/changesetting<setting><value>', methods = ['PUT'])
+# @auth.login_required
+# def change_setting(task_id):
+#     task = filter(lambda t: t['id'] == task_id, tasks)
+#     if len(setting) == 0:
+#         abort(404)
+#     if not request.json:
+#         abort(400)
+#     if 'setting' in request.json and type(request.json['setting']) != unicode:
+#         abort(400)
+#     if 'description' in request.json and type(request.json['description']) is not unicode:
+#         abort(400)
+#     if 'done' in request.json and type(request.json['done']) is not bool:
+#         abort(400)
+#     task[0]['title'] = request.json.get('title', task[0]['title'])
+#     task[0]['description'] = request.json.get('description', task[0]['description'])
+#     task[0]['done'] = request.json.get('done', task[0]['done'])
+#     return jsonify( { 'task': make_public_task(task[0]) } )
+
+@app.route('/laptoppower/api/v1.0/profiles/deleteprofile/<guid>', methods = ['DELETE'])
+@auth.login_required
+def delete_profile(guid):
+    if len(guid) == 0:
         abort(404)
-    tasks.remove(task[0])
-    return jsonify( { 'result': True } )
+    response = laptop_control.delete_scheme(guid)
+    return jsonify( { 'response': response } )
     
 if __name__ == '__main__':
     app.run(debug = True)
