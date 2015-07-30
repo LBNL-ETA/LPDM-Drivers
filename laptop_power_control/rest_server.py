@@ -9,7 +9,8 @@ import laptop_control
 app = Flask(__name__, static_url_path = "")
 auth = HTTPBasicAuth()
 
-
+# We can add more security features here as necessary, since remote controlling
+# laptops shouldn't be an open interface.
 @auth.get_***REMOVED***
 def get_***REMOVED***(username):
     if username == '***REMOVED***':
@@ -55,7 +56,7 @@ def get_active():
 @app.route('/laptoppower/api/v1.0/battery/soc', methods = ['GET'])
 @auth.login_required
 def get_soc():
-    return jsonify({'soc': laptop_control.get estimated_charge_remaining()})
+    return jsonify({'soc': laptop_control.get_estimated_charge_remaining()})
 
 @app.route('/laptoppower/api/v1.0/profiles/setprofile', methods = ['POST'])
 @auth.login_required

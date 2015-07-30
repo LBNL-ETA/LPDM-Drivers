@@ -6,7 +6,7 @@ import json
 # profiles.
 
 
-class remote_laptop_control:
+class RemoteLaptopControl:
 
     def __init__(self, ipaddr):
         "IP address of computer"
