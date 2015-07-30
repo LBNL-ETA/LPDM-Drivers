@@ -92,11 +92,11 @@ import re
     # FUNCTIONS OF Win32_Battery                                              *
     #**************************************************************************
 
-    def get EstimatedChargeRemaining():
+    def get estimated_charge_remaining():
         "Returns a number representing the current % of charge. If the laptop is charging will return 111"
         return subprocess.check_output(["WMIC", "PATH", "Win32_Battery", "Get EstimatedChargeRemaining"])
 
-    def get EstimatedRunTime():
+    def get estimated_run_time():
         "Returns a number representing the number of minutes of battery life remaining."
         return subprocess.check_output(["WMIC", "PATH", "Win32_Battery", "Get EstimatedRunTime"])
 

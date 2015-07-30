@@ -40,17 +40,22 @@ def get_profile(guid):
     profile = laptop_control.query(guid)
     if len(profile) == 0:
         abort(404)
-    return jsonify({'profile': profile})
+    return jsonify({'profile': profile()})
 
 @app.route('/laptoppower/api/v1.0/profiles/aliases', methods = ['GET'])
 @auth.login_required
 def get_aliases():
-    return jsonify({'aliases', laptop_control.get_aliases})
+    return jsonify({'aliases': laptop_control.get_aliases()})
 
 @app.route('/laptoppower/api/v1.0/profiles/active', methods = ['GET'])
 @auth.login_required
 def get_active():
-    return jsonify({'plan', laptop_control.get_active})
+    return jsonify({'plan': laptop_control.get_active()})
+
+@app.route('/laptoppower/api/v1.0/battery/soc', methods = ['GET'])
+@auth.login_required
+def get_soc():
+    return jsonify({'soc': laptop_control.get estimated_charge_remaining()})
 
 @app.route('/laptoppower/api/v1.0/profiles/setprofile', methods = ['POST'])
 @auth.login_required
@@ -95,6 +100,6 @@ def delete_profile(guid):
         abort(404)
     response = laptop_control.delete_scheme(guid)
     return jsonify( { 'response': response } )
-    
+
 if __name__ == '__main__':
     app.run(debug = True)
