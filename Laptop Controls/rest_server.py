@@ -50,7 +50,7 @@ def get_aliases():
 @app.route('/laptoppower/api/v1.0/profiles/active', methods = ['GET'])
 @auth.login_required
 def get_active():
-    return jsonify({'aliases', laptop_control.get_active})
+    return jsonify({'plan', laptop_control.get_active})
 
 @app.route('/laptoppower/api/v1.0/profiles/setprofile', methods = ['POST'])
 @auth.login_required
