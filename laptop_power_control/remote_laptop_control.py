@@ -13,10 +13,11 @@ class RemoteLaptopControl:
         self.ipaddr = ipaddr
         # Power levels from 1 to 10 for plan
         # Request current state and go from there
-        self.plan = int(10)
+        self.plan = self.getPlan
 
     def lowerPower(self):
         "Lowers power level by 1"
+        self.plan = self.getPlan()
         if self.plan > 1:
             payload = {'name': str(self.plan - 1)}
             r = requests.post(self.ipaddr + '/laptoppower/api/v1.0/profiles/setprofilebyname', auth=('***REMOVED***', '***REMOVED***'), params = payload)
@@ -32,6 +33,7 @@ class RemoteLaptopControl:
 
     def increasePower(self):
         "Increases power level by 1"
+        self.plan = self.getPlan()
         if self.plan < 11:
             payload = {'name': str(self.plan + 1)}
             r = requests.post(self.ipaddr + '/laptoppower/api/v1.0/profiles/setprofilebyname', auth=('***REMOVED***', '***REMOVED***'), params = payload)
@@ -45,7 +47,7 @@ class RemoteLaptopControl:
 
     def setPower(self, powerLevel):
         "Sets power level to value passed in"
-        if self.plan < 11 and self.plan > 0:
+        if powerLevel < 11 and powerLevel > 0:
             payload = {'name': str(powerLevel)}
             r = requests.post(self.ipaddr + '/laptoppower/api/v1.0/profiles/setprofilebyname', auth=('***REMOVED***', '***REMOVED***'), params = payload)
             # Check that post was successful
@@ -56,12 +58,22 @@ class RemoteLaptopControl:
         else:
             print('Provided powerLevel is not within acceptable bounds.')
 
+    def getPlan(self):
+        "Updates the value of the plan"
+        r = requests.get(self.ipaddr + '/laptoppower/api/v1.0/profiles/active')
+        if r.status_code == 201:
+            response = int(json.loads(r.text)['plan'])
+            if response < 11:
+                return response
+            else:
+                return -100
+
     def getSoc(self):
         "Returns an integer which represents the percent charge. 111 means charging."
         "Returns -100 if the request fails"
         r = requests.get(self.ipaddr + '/laptoppower/api/v1.0/battery/soc')
         if r.status_code == 201:
-            return json.loads(r.text)[soc]
+            return json.loads(r.text)['soc']
         else:
             print('getSoc request failed with error' + str(r.status_code))
             return -100
