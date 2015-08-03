@@ -18,7 +18,6 @@
 import httplib, urllib
 import ssdp
 from xml.etree import ElementTree
-from lxml import etree, objectify
 
 class TCPLights:
     '''A class for discovering and controlling TCP smart lights over http'''
