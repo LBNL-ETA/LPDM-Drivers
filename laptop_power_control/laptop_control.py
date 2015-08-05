@@ -23,7 +23,7 @@ import re
             # Select name and GUID from each line and place them in the result
             # EG 1d77c431-8167-48c8-aca3-0d1260bfdf2b
             GUID = re.findall('[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}', line)[0]
-            # EG  (Extended                        Battery Life (Max run-time).)
+            # EG  (Extended Battery Life (Max run-time).)
             name = re.findall(' \(.+', line)[0]
             result[name] = GUID
 

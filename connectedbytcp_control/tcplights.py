@@ -18,6 +18,7 @@
 import httplib, urllib
 import ssdp
 from xml.etree import ElementTree
+from lxml import etree, objectify
 
 class TCPLights:
     '''A class for discovering and controlling TCP smart lights over http'''
@@ -34,7 +35,7 @@ class TCPLights:
         if discover:
             resp = ssdp.discover(self.TCP_DISC_ST)
             if resp:
-                self.gateway_ipaddr = resp[0].location.split('http://')[1]
+                self.gateway_ipaddr = resp[0].location.split('http://')[0].split('://')[1]
                 self.TCPGetLights()
         
             else:
