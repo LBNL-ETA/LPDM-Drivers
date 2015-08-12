@@ -39,8 +39,9 @@ def get_list():
 @auth.login_required
 def get_profile(guid):
     profile = laptop_control.query(guid)
-    if len(profile) == 0:
+    if not profile:
         abort(404)
+        print('abort')
     return jsonify({'profile': profile()})
 
 @app.route('/laptoppower/api/v1.0/profiles/aliases', methods = ['GET'])
@@ -56,7 +57,12 @@ def get_active():
 @app.route('/laptoppower/api/v1.0/battery/soc', methods = ['GET'])
 @auth.login_required
 def get_soc():
-    return jsonify({'soc': laptop_control.get_estimated_charge_remaining()})
+    return jsonify(laptop_control.get_estimated_charge_remaining())
+
+@app.route('/laptoppower/api/v1.0/battery/soc/estimatedruntime', methods = ['GET'])
+@auth.login_required
+def get_estimated_run_time():
+    return jsonify(laptop_control.get_estimated_run_time())
 
 @app.route('/laptoppower/api/v1.0/profiles/setprofile', methods = ['POST'])
 @auth.login_required

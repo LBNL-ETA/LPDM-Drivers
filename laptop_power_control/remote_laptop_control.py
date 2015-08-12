@@ -60,7 +60,7 @@ class RemoteLaptopControl:
 
     def getPlan(self):
         "Updates the value of the plan"
-        r = requests.get(self.ipaddr + '/laptoppower/api/v1.0/profiles/active')
+        r = requests.get(self.ipaddr + '/laptoppower/api/v1.0/profiles/active', auth=('***REMOVED***', '***REMOVED***'))
         if r.status_code == 201:
             response = int(json.loads(r.text)['plan'])
             if response < 11:
@@ -71,7 +71,7 @@ class RemoteLaptopControl:
     def getSoc(self):
         "Returns an integer which represents the percent charge. 111 means charging."
         "Returns -100 if the request fails"
-        r = requests.get(self.ipaddr + '/laptoppower/api/v1.0/battery/soc')
+        r = requests.get(self.ipaddr + '/laptoppower/api/v1.0/battery/soc', auth=('***REMOVED***', '***REMOVED***'))
         if r.status_code == 201:
             return json.loads(r.text)['soc']
         else:
