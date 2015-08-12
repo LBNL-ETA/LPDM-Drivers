@@ -54,47 +54,48 @@ def query(scheme_guid, sub_guid = ""):
 
 def change_setting_value(setting, value):
     "Changes a setting of the powercfg, setting, to the new value, value. Returns output if any"
-    return subprocess.check_output(["powercfg", "-change", setting, str(value)])
+    return subprocess.check_output(["powercfg", "-change", setting, str(value)]).strip()
 
 
 def import_file(path, GUID):
     "Imports a power scheme file from the given path and with GUID"
-    return subprocess.check_output(["powercfg", "-import", "filename", GUID])
+    return subprocess.check_output(["powercfg", "-import", "filename", GUID]).strip()
 
 
 def export_file(path, GUID):
     "Exports a power scheme of the given GUID to path"
-    return subprocess.check_output(["powercfg", "-export", "filename", GUID])
+    return subprocess.check_output(["powercfg", "-export", "filename", GUID]).strip()
 
 
 def get_aliases():
     "Returns a list of all aliases"
-    return subprocess.check_output(["powercfg", "-aliases"]).splitlines()
+    result = subprocess.check_output(["powercfg", "-aliases"]).splitlines()
+    return filter(None, result)
 
 
 def delete_scheme(GUID):
     "Deletes power scheme associated with GUID"
-    return subprocess.check_output(["powercfg", "-d", GUID])
+    return subprocess.check_output(["powercfg", "-d", GUID]).strip()
 
 
 def duplicatescheme(GUID, destinationGUID):
     "Creates a copy of scheme, GUID, with new GUID, destinationGUID"
-    return subprocess.check_output(["powercfg", "-duplicatescheme", GUID, destinationGUID])
+    return subprocess.check_output(["powercfg", "-duplicatescheme", GUID, destinationGUID]).strip()
 
 
 def set_active(GUID):
     "Sets GUID to be the active power scheme"
-    return subprocess.check_output(["powercfg", "-setactive", GUID])
+    return subprocess.check_output(["powercfg", "-setactive", GUID]).strip()
 
 
 def get_active():
     "Returns the active GUID"
-    return subprocess.check_output(["powercfg", "-getactivescheme"])
+    return subprocess.check_output(["powercfg", "-getactivescheme"]).strip()
 
 
 def change_name(GUID, name, description = ""):
     "Changes name and description of scheme with GUID passed in"
-    return subprocess.check_output(["powercfg", "-changename", GUID, name, description])
+    return subprocess.check_output(["powercfg", "-changename", GUID, name, description]).strip()
 
 #**************************************************************************
 # FUNCTIONS OF Win32_Battery                                              *
@@ -103,12 +104,12 @@ def change_name(GUID, name, description = ""):
 
 def get_estimated_charge_remaining():
     "Returns a number representing the current % of charge. If the laptop is charging will return 111"
-    return subprocess.check_output(["WMIC", "PATH", "Win32_Battery", "Get EstimatedChargeRemaining"])
+    return subprocess.check_output(["WMIC", "Path", "Win32_Battery", "Get", "EstimatedChargeRemaining"]).strip()
 
 
 def get_estimated_run_time():
     "Returns a number representing the number of minutes of battery life remaining."
-    return subprocess.check_output(["WMIC", "PATH", "Win32_Battery", "Get EstimatedRunTime"])
+    return subprocess.check_output(["WMIC", "Path", "Win32_Battery", "Get", "EstimatedRunTime"]).strip()
 
 #**************************************************************************
 # ADDITIONAL FUNCTIONS ADDED and helpers                                  *
@@ -118,4 +119,4 @@ def get_estimated_run_time():
 def set_active_by_name(name):
     "Sets active power scheme by name"
     GUID = list()[name]
-    return set_active(GUID)
+    return set_active(GUID).strip()
