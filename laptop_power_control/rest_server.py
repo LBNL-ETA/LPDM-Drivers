@@ -35,14 +35,13 @@ def not_found(error):
 def get_list():
     return jsonify(laptop_control.list())
 
-@app.route('/laptoppower/api/v1.0/profiles/getprofile/<guid>', methods = ['GET'])
+@app.route('/laptoppower/api/v1.0/profiles/<guid>', methods = ['GET'])
 @auth.login_required
 def get_profile(guid):
     profile = laptop_control.query(guid)
     if not profile:
-        abort(404)
-        print('abort')
-    return jsonify({'profile': profile()})
+        abort(404) 
+    return jsonify({'profile': profile})
 
 @app.route('/laptoppower/api/v1.0/profiles/aliases', methods = ['GET'])
 @auth.login_required
@@ -81,7 +80,7 @@ def set_profile_by_name():
     return jsonify( { 'response': response } ), 201
 
 
-# @app.route('/laptoppower/api/v1.0/tasks/changesetting<setting><value>', methods = ['PUT'])
+# @app.route('/laptoppower/api/v1.0/tasks/changesetting/<setting>/<value>', methods = ['PUT'])
 # @auth.login_required
 # def change_setting(task_id):
 #     task = filter(lambda t: t['id'] == task_id, tasks)

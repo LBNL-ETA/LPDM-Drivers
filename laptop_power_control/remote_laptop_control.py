@@ -5,12 +5,20 @@ import json
 # power control of a rest API accessible laptop computer's power
 # profiles.
 
+# Currently not using multiple power level functionality
+
+# Requires user to have set up linear levels of power profiles to use
+# Variable power use profiles. with lowerPower, increasePower, setPower
+
+# Otherise plan can be acquired and the SoC can be acquired with getPlan
+# and getSoc
+
 
 class RemoteLaptopControl:
 
     def __init__(self, ipaddr):
         "IP address of computer"
-        self.ipaddr = ipaddr
+        self.ipaddr = 'http://' + ipaddr
         # Power levels from 1 to 10 for plan
         # Request current state and go from there
         self.plan = self.getPlan
@@ -28,6 +36,7 @@ class RemoteLaptopControl:
                 print('lowerPower request failed with error' + str(r.status_code))
         elif self.plan == 1:
             # Turn off computer? I don't think we want to do this...
+            pass
         else:
             print('Cannot lower power level further')
 
@@ -58,22 +67,32 @@ class RemoteLaptopControl:
         else:
             print('Provided powerLevel is not within acceptable bounds.')
 
-    def getPlan(self):
+    def updatePlan(self):
         "Updates the value of the plan"
         r = requests.get(self.ipaddr + '/laptoppower/api/v1.0/profiles/active', auth=('***REMOVED***', '***REMOVED***'))
-        if r.status_code == 201:
-            response = int(json.loads(r.text)['plan'])
+        if r.status_code == 200:
+            response = int(json.loads(r.text)['name'])
             if response < 11:
                 return response
             else:
                 return -100
 
+    def getPlan(self):
+        "Returns the active power profile on the laptop"
+        r = requests.get(self.ipaddr + '/laptoppower/api/v1.0/profiles/active', auth=('***REMOVED***', '***REMOVED***'))
+        if r.status_code == 200:
+            response = json.loads(r.text)['plan']['name']
+            return response
+        else:
+            print('getPlan request failed with error' + str(r.status_code))
+            return {'Error': r.status_code}
+
     def getSoc(self):
         "Returns an integer which represents the percent charge. 111 means charging."
         "Returns -100 if the request fails"
         r = requests.get(self.ipaddr + '/laptoppower/api/v1.0/battery/soc', auth=('***REMOVED***', '***REMOVED***'))
-        if r.status_code == 201:
-            return json.loads(r.text)['soc']
+        if r.status_code == 200:
+            return json.loads(r.text)['EstimatedChargeRemaining']
         else:
             print('getSoc request failed with error' + str(r.status_code))
             return -100
