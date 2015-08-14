@@ -79,26 +79,6 @@ def set_profile_by_name():
     response = laptop_control.set_active_by_name(request.json['name'])
     return jsonify( { 'response': response } ), 201
 
-
-# @app.route('/laptoppower/api/v1.0/tasks/changesetting/<setting>/<value>', methods = ['PUT'])
-# @auth.login_required
-# def change_setting(task_id):
-#     task = filter(lambda t: t['id'] == task_id, tasks)
-#     if len(setting) == 0:
-#         abort(404)
-#     if not request.json:
-#         abort(400)
-#     if 'setting' in request.json and type(request.json['setting']) != unicode:
-#         abort(400)
-#     if 'description' in request.json and type(request.json['description']) is not unicode:
-#         abort(400)
-#     if 'done' in request.json and type(request.json['done']) is not bool:
-#         abort(400)
-#     task[0]['title'] = request.json.get('title', task[0]['title'])
-#     task[0]['description'] = request.json.get('description', task[0]['description'])
-#     task[0]['done'] = request.json.get('done', task[0]['done'])
-#     return jsonify( { 'task': make_public_task(task[0]) } )
-
 @app.route('/laptoppower/api/v1.0/profiles/deleteprofile/<guid>', methods = ['DELETE'])
 @auth.login_required
 def delete_profile(guid):
