@@ -1,5 +1,5 @@
 # TUTORIAL CODE for restful API server, TO BE ADAPTED FOR OUR PURPOSES
-# from https://gist.github.com/miguelgrinberg/5614326
+# from https://github.com/miguelgrinberg/REST-tutorial which is MIT licensed as of 20161205:  https://github.com/miguelgrinberg/REST-tutorial/blob/master/LICENSE
 
 #!flask/bin/python
 from flask import Flask, jsonify, abort, request, make_response, url_for
