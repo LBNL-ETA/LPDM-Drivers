@@ -29,19 +29,22 @@ import json
 
 class RemoteLaptopControl:
 
-    def __init__(self, ipaddr):
+    def __init__(self, ipaddr, username = None, ***REMOVED*** = None):
         "IP address of computer"
         self.ipaddr = 'http://' + ipaddr
         # Power levels from 1 to 10 for plan
         # Request current state and go from there
         self.plan = self.getPlan
+        self.username = username
+        self.***REMOVED*** = ***REMOVED***
+        self.auth = (self.username, self.***REMOVED***)
 
     def lowerPower(self):
         "Lowers power level by 1"
         self.plan = self.getPlan()
         if self.plan > 1:
             payload = {'name': str(self.plan - 1)}
-            r = requests.post(self.ipaddr + '/laptoppower/api/v1.0/profiles/setprofilebyname', auth=('***REMOVED***', '***REMOVED***'), params = payload)
+            r = requests.post(self.ipaddr + '/laptoppower/api/v1.0/profiles/setprofilebyname', auth=self.auth, params = payload)
             # Check that post was successful
             if r.status_code == 201:
                 self.plan = self.plan - 1
@@ -58,7 +61,7 @@ class RemoteLaptopControl:
         self.plan = self.getPlan()
         if self.plan < 11:
             payload = {'name': str(self.plan + 1)}
-            r = requests.post(self.ipaddr + '/laptoppower/api/v1.0/profiles/setprofilebyname', auth=('***REMOVED***', '***REMOVED***'), params = payload)
+            r = requests.post(self.ipaddr + '/laptoppower/api/v1.0/profiles/setprofilebyname', auth=self.auth, params = payload)
             # Check that post was successful
             if r.status_code == 201:
                 self.plan = self.plan + 1
@@ -71,7 +74,7 @@ class RemoteLaptopControl:
         "Sets power level to value passed in"
         if powerLevel < 11 and powerLevel > 0:
             payload = {'name': str(powerLevel)}
-            r = requests.post(self.ipaddr + '/laptoppower/api/v1.0/profiles/setprofilebyname', auth=('***REMOVED***', '***REMOVED***'), params = payload)
+            r = requests.post(self.ipaddr + '/laptoppower/api/v1.0/profiles/setprofilebyname', auth=self.auth, params = payload)
             # Check that post was successful
             if r.status_code == 201:
                 self.plan = powerLevel
@@ -82,7 +85,7 @@ class RemoteLaptopControl:
 
     def updatePlan(self):
         "Updates the value of the plan"
-        r = requests.get(self.ipaddr + '/laptoppower/api/v1.0/profiles/active', auth=('***REMOVED***', '***REMOVED***'))
+        r = requests.get(self.ipaddr + '/laptoppower/api/v1.0/profiles/active', auth=self.auth)
         if r.status_code == 200:
             response = int(json.loads(r.text)['name'])
             if response < 11:
@@ -92,7 +95,7 @@ class RemoteLaptopControl:
 
     def getPlan(self):
         "Returns the active power profile on the laptop"
-        r = requests.get(self.ipaddr + '/laptoppower/api/v1.0/profiles/active', auth=('***REMOVED***', '***REMOVED***'))
+        r = requests.get(self.ipaddr + '/laptoppower/api/v1.0/profiles/active', auth=self.auth)
         if r.status_code == 200:
             response = json.loads(r.text)['plan']['name']
             return response
@@ -103,7 +106,7 @@ class RemoteLaptopControl:
     def getSoc(self):
         "Returns an integer which represents the percent charge. 111 means charging."
         "Returns -100 if the request fails"
-        r = requests.get(self.ipaddr + '/laptoppower/api/v1.0/battery/soc', auth=('***REMOVED***', '***REMOVED***'))
+        r = requests.get(self.ipaddr + '/laptoppower/api/v1.0/battery/soc', auth=self.auth)
         if r.status_code == 200:
             return json.loads(r.text)['EstimatedChargeRemaining']
         else:

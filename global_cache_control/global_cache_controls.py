@@ -17,7 +17,7 @@ import socket
 
 
 class GlobalCacheBridge:
-    def __init__(self, address='***REMOVED***'):
+    def __init__(self, address=None):
         # Assuming an ethernet/network connection
         PORT = 4998
         # intiate socket

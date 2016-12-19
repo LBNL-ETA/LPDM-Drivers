@@ -16,7 +16,7 @@ from beautifulhue.api import Bridge
 
 # Control functionality of bridge system wrapper to simplify interface
 class HueBridge:
-    def __init__(self, ip='***REMOVED***', user_name='***REMOVED***'):
+    def __init__(self, ip=None, user_name=None):
         #New Hue control with ip and user name
         self.ip = ip
         self.user_name = user_name

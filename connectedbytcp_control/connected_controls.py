@@ -14,7 +14,7 @@
 from tcplights import TCPLights
 
 class ConnectedLight:
-    def __init__(self, lights, did, ipaddr='***REMOVED***'):
+    def __init__(self, lights, did, ipaddr=None):
         self.lights = lights
         self.did = did
 
