@@ -23,10 +23,9 @@ auth = HTTPBasicAuth()
 
 # We can add more security features here as necessary, since remote controlling
 # laptops shouldn't be an open interface.
-@auth.get_***REMOVED***
-def get_***REMOVED***(username):
-    if username == '***REMOVED***':
-        return '***REMOVED***'
+@auth.get_password
+def get_password(username):
+    raise NotImplementedError("Redacted account information for public release.  This should be implemented with appropriate information and security for use.")    
     return None
 
 @auth.error_handler
@@ -100,4 +99,5 @@ def delete_profile(guid):
     return jsonify( { 'response': response } )
 
 if __name__ == '__main__':
+    print "Warning:  Running in debug mode and publicly available.  Not for use in production."
     app.run(host='0.0.0.0', debug = True)

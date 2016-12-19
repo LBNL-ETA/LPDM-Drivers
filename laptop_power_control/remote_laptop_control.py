@@ -29,15 +29,15 @@ import json
 
 class RemoteLaptopControl:
 
-    def __init__(self, ipaddr, username = None, ***REMOVED*** = None):
+    def __init__(self, ipaddr, username = None, password = None):
         "IP address of computer"
         self.ipaddr = 'http://' + ipaddr
         # Power levels from 1 to 10 for plan
         # Request current state and go from there
         self.plan = self.getPlan
         self.username = username
-        self.***REMOVED*** = ***REMOVED***
-        self.auth = (self.username, self.***REMOVED***)
+        self.password = password
+        self.auth = (self.username, self.password)
 
     def lowerPower(self):
         "Lowers power level by 1"
