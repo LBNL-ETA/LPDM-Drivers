@@ -1,10 +1,11 @@
 import requests
 
 class Light_Driver(object):
-    def __init__(self, url, auth):
+    def __init__(self, url, auth, switch_point = 0.50):
         self.url = url
         self.auth = auth
         self.command_template = "<?xml version=\"1.0\" encoding=\"utf-8\"?><LG_CMD><CMD><CMDID>SET_MODE_BC</CMDID><MODE>{mode}</MODE></CMD></LG_CMD>\n\n"
+        self.switch_point = switch_point
         
     def get_charge_command(self):
         return self.command_template.format(mode="CHARGE")
@@ -38,7 +39,7 @@ class Light_Driver(object):
             If light_level < .50 sets lights to discharge
             Otherwise sets lights to charge.
         """
-        if light_level < .50:
+        if light_level < self.switch_point:
             return self.set_to_discharge()
         else:
             return self.set_to_charge()
