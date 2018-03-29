@@ -5,31 +5,20 @@ from smap_tools import smap_post
 
 
 source_name= "Test Posting"
-
-#timestamp = datetime.now()
-#value = random.uniform(0, 1)
-smap_api_key = "bIfgMJy0QPqDlp9lsfazwL70kyynrL9Guo5g" #chomp
-#smap_api_key="MTTf1EZPRZELHr5hflJpsUus5ArBqS766NGi" #flexstorevh
-smap_root = "http://chomp.lbl.gov/"
-#smap_root="https://flexstorevh.lbl.gov"
-timezone_string = "America/Los_Angeles"
+smap_api_key = "REMOVED"
+smap_root = "REMOVED"
+timezone_string = "REMOVED"
 als_unit=""
-additional_metadata = {"location":"Flexlab"}
+additional_metadata = {"location":"REMOVED"}
 
 def convert_presence_to_number(presence):
     mapping = {"No" : 0, "Yes" : 1}
     res = mapping.get(presence, -1)
-    if res == -1:
-        with open("/tmp/unknown_presence", "a") as f:
-            f.write(presence + "\n")
     return res
 
 def convert_mode_to_number(mode):
     mapping = {"NOCHARGE" : 0, "CHARGE" : 1, "DISCHARGE" : 2}
     res = mapping.get(mode, -1)
-    if res == -1:
-        with open("/tmp/unknown_modes", "a") as f:
-            f.write(mode + "\n")
     return res
  
 class Smap_Poster(threading.Thread):
@@ -44,6 +33,7 @@ class Smap_Poster(threading.Thread):
     def post_readings(self, readings):
         total_power_used = 0
         latest_timestamp = readings[0].timestamp
+        power_from_wall = 0
         for reading in readings:
             latest_timestamp = max(latest_timestamp, reading.timestamp)
             path_base="/Philips/" + reading.id
@@ -66,10 +56,10 @@ class Smap_Poster(threading.Thread):
             smap_post(smap_root, smap_api_key, soh_path, "%", "double", [[reading.timestamp, reading.soh]], source_name, timezone_string, additional_metadata)
             
             total_power_used += reading.battery_charge_power + reading.led_power
-            with open("/tmp/total_power", "a") as f:
-                f.write("{id}, {b}, {l}, {t}\n".format(id=reading.id, b=reading.battery_charge_power, l=reading.led_power, t=total_power_used))
+            power_from_wall += reading.battery_charge_power + reading.led_power - reading.discharge_power
             
         smap_post(smap_root, smap_api_key, "/Philips/total_power", "W" , "double", [[latest_timestamp, total_power_used]], source_name, timezone_string, additional_metadata)
+        smap_post(smap_root, smap_api_key, "/Philips/power_from_wall", "W" , "double", [[latest_timestamp, power_from_wall]], source_name, timezone_string, additional_metadata)
         
     def run(self):
         while not self._stop:
